@@ -20,7 +20,7 @@ def test_foo():
 
     # If a gust hits "strong breeze", complain
     if wind_mph['gust'] >= 25:
-        print("It's much too windy")
+        print("It's much too windy.")
     else:
         print("The wind looks OK.")
 
