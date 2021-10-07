@@ -2,8 +2,8 @@ import pyowm
 
 PEACE_ANGEL_COORDINATES = (50.82257, -0.15690)
 
-def feels_like(observation):
-    return observation.weather.temperature('celsius')['feels_like']
+def feels_like(weather):
+    return weather.temperature('celsius')['feels_like']
 
 def test_foo():
     with open('.owm_key', 'r') as f:
@@ -13,10 +13,10 @@ def test_foo():
     owm = pyowm.OWM(key)
     mgr = owm.weather_manager()
     observation = mgr.weather_at_coords(*PEACE_ANGEL_COORDINATES)
+    weather = observation.weather
 
-    feels_like_c = feels_like(observation)
-
-    wind_mph = observation.weather.wind(unit='miles_hour')
+    feels_like_c = feels_like(weather)
+    wind_mph = weather.wind(unit='miles_hour')
 
     # If a gust hits "strong breeze", complain
     if wind_mph['gust'] >= 25:
