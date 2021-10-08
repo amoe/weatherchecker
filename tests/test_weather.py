@@ -18,13 +18,24 @@ def test_foo():
     feels_like_c = feels_like(weather)
     wind_mph = weather.wind(unit='miles_hour')
 
-    # If a gust hits "strong breeze", complain
-    if wind_mph['gust'] >= 25:
-        print("It's much too windy.")
+    if weather.rain:
+        print("There's some rain.", weather.rain)
     else:
-        print("The wind looks OK.")
+        print("There's no rain at all.")
 
-    if feels_like_c > 10:
+    # If a gust hits "strong breeze", complain
+    gust = wind_mph['gust']
+
+    if gust >= 25:
+        print("It's much too windy for a run.")
+    elif gust >= 3:
+        print("There's some wind, but not too much.")
+    else:
+        print("There's basically no wind.")
+
+    if feels_like_c >= 15:
+        print("You're probably going to be sweating in a T-shirt.")
+    elif feels_like_c >= 8:
         print("You should be fine in a T-shirt.")
     else:
         print("It's cold, better wear a jumper.")
