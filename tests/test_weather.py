@@ -1,4 +1,5 @@
 import pyowm
+import pdb
 
 PEACE_ANGEL_COORDINATES = (50.82257, -0.15690)
 
@@ -14,6 +15,15 @@ def test_foo():
     mgr = owm.weather_manager()
     observation = mgr.weather_at_coords(*PEACE_ANGEL_COORDINATES)
     weather = observation.weather
+
+    cloud_coverage = weather.clouds
+
+    if cloud_coverage >= 50:
+        print("It's murky and overcast.")
+    elif cloud_coverage >= 20:
+        print("There are scattered clouds.")
+    else:
+        print("There's not a cloud in the sky.")
 
     feels_like_c = feels_like(weather)
     wind_mph = weather.wind(unit='miles_hour')
@@ -32,7 +42,7 @@ def test_foo():
         print("There's some wind, but not too much.")
     else:
         print("There's basically no wind.")
-
+        
     if feels_like_c >= 15:
         print("You're probably going to be sweating in a T-shirt.")
     elif feels_like_c >= 8:
