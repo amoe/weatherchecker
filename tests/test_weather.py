@@ -60,8 +60,16 @@ def test_foo():
         print("It's cold, better wear a jumper.")
 
     forecaster = mgr.forecast_at_coords(*PEACE_ANGEL_COORDINATES, interval='3h')
-    clear_intervals = forecaster.when_clear()
-    next_interval = clear_intervals[0]
+
+    for weather in forecaster.forecast:
+        wind = weather.wind(unit='miles_hour')
+        rain = weather.rain
+        if wind['gust'] < 25 and not rain and weather.clouds <= 50:
+            print(weather.reference_time('iso'), weather.detailed_status, weather.clouds)
+
+    # clear_intervals = forecaster.when_clear()
+    # next_interval = clear_intervals[0]
     
-    print("Maybe wait for:", next_interval.reference_time('iso'), next_interval.detailed_status)
+    # print("Maybe wait for:", next_interval.reference_time('iso'), next_interval.detailed_status)
+    # print("The wind at this time is:", next_interval.wind(unit='miles_hour'))
 
