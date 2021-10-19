@@ -59,13 +59,21 @@ def test_foo():
     else:
         print("It's cold, better wear a jumper.")
 
+
+    # TODO parse out sunset time
+    # print(weather.sunset_time())
+        
     forecaster = mgr.forecast_at_coords(*PEACE_ANGEL_COORDINATES, interval='3h')
 
+
+    
     for weather in forecaster.forecast:
         wind = weather.wind(unit='miles_hour')
         rain = weather.rain
+        print(weather.to_dict())
         if wind['gust'] < 25 and not rain and weather.clouds <= 50:
-            print(weather.reference_time('iso'), weather.detailed_status, weather.clouds)
+            print(weather.reference_time('iso'), weather.detailed_status, weather.clouds, weather.sunset_time(timeformat='unix'))
+            
 
     # clear_intervals = forecaster.when_clear()
     # next_interval = clear_intervals[0]
