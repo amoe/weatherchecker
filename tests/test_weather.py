@@ -12,11 +12,15 @@ def test_foo():
         print("read key as", key)
 
     owm = pyowm.OWM(key)
+
+    
     mgr = owm.weather_manager()
     observation = mgr.weather_at_coords(*PEACE_ANGEL_COORDINATES)
     weather = observation.weather
 
     cloud_coverage = weather.clouds
+
+    print("Overall status is:", weather.status)
 
     if cloud_coverage >= 50:
         print("It's murky and overcast.")
@@ -27,19 +31,24 @@ def test_foo():
 
     feels_like_c = feels_like(weather)
     wind_mph = weather.wind(unit='miles_hour')
+    print("wind is", wind_mph)
 
     if weather.rain:
         print("There's some rain.", weather.rain)
     else:
         print("There's no rain at all.")
 
+    print("Visibility is:", weather.visibility())
+
     # If a gust hits "strong breeze", complain
     gust = wind_mph['gust']
 
     if gust >= 25:
         print("It's much too windy for a run.")
+    elif gust >= 13:
+        print("You're gonna be against the wind, at least one way.")
     elif gust >= 3:
-        print("There's some wind, but not too much.")
+        print("There's some wind, but not enough to care about.")
     else:
         print("There's basically no wind.")
         
@@ -50,4 +59,9 @@ def test_foo():
     else:
         print("It's cold, better wear a jumper.")
 
-    assert 2 + 2 == 4
+    forecaster = mgr.forecast_at_coords(*PEACE_ANGEL_COORDINATES, interval='3h')
+    clear_intervals = forecaster.when_clear()
+    next_interval = clear_intervals[0]
+    
+    print("Maybe wait for:", next_interval.reference_time('iso'), next_interval.detailed_status)
+
