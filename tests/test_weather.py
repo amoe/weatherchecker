@@ -7,6 +7,9 @@ PEACE_ANGEL_COORDINATES = (50.82257, -0.15690)
 def feels_like(weather):
     return weather.temperature('celsius')['feels_like']
 
+def in_bounds(x, y, tolerance):
+    return (x > (y - tolerance)) and (x < (y + tolerance))
+
 def time_from_epoch_time(epoch_time):
     timestamp = datetime.datetime.utcfromtimestamp(epoch_time)
     return timestamp.time()
@@ -37,6 +40,12 @@ def test_foo():
 
     feels_like_c = feels_like(weather)
     wind_mph = weather.wind(unit='miles_hour')
+
+    deg = wind_mph['deg']
+
+    if in_bounds(deg, 270, 10) or in_bounds(deg, 90, 10):
+        print("Heavily directional wind!  Watch out")
+    
     print("wind is", wind_mph)
 
     if weather.rain:
@@ -57,7 +66,8 @@ def test_foo():
         print("There's some wind, but not enough to care about.")
     else:
         print("There's basically no wind.")
-        
+
+    print(feels_like_c)
     if feels_like_c >= 15:
         print("You're probably going to be sweating in a T-shirt.")
     elif feels_like_c >= 8:
@@ -66,12 +76,15 @@ def test_foo():
         print("It's cold, better wear a jumper.")
 
 
-    # TODO parse out sunset time and correlate to forecasts
+    # XXX: Not 100% sure this is robust against BST
     sunrise_time = time_from_epoch_time(weather.sunrise_time())
     sunset_time = time_from_epoch_time(weather.sunset_time())
-        
-    forecaster = mgr.forecast_at_coords(*PEACE_ANGEL_COORDINATES, interval='3h')
 
+    print("Determined sunrise time as", sunrise_time)
+    print("Determined sunset time as", sunset_time)
+
+    # 3h is the finest forecast granularity available.
+    forecaster = mgr.forecast_at_coords(*PEACE_ANGEL_COORDINATES, interval='3h')
 
     
     for weather in forecaster.forecast:
@@ -84,7 +97,10 @@ def test_foo():
         if wind['speed'] < 25 and not rain and weather.clouds <= 50 and this_time > sunrise_time and this_time < sunset_time:
             print(weather.reference_time('iso'), weather.detailed_status, weather.clouds)
             
-
+    # check:
+    # 270 += 20deg = blowing east
+    # 90 += 20deg = blowing west
+            
     # clear_intervals = forecaster.when_clear()
     # next_interval = clear_intervals[0]
     
