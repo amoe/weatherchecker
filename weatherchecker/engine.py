@@ -77,6 +77,9 @@ def get_weather(print) -> None:
     else:
         print("It's cold, better wear a jumper.")
 
+    if feels_like_c < 3:
+        print("You'd better wear some gloves as well.")
+
 
     # XXX: Not 100% sure this is robust against BST
     sunrise_time = time_from_epoch_time(weather.sunrise_time())
