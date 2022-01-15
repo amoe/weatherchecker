@@ -20,7 +20,6 @@ def time_from_epoch_time(epoch_time):
 def get_weather(print) -> None:
     with open('.owm_key', 'r') as f:
         key = f.read().rstrip()
-        print("read key as", key)
 
     owm = pyowm.OWM(key)
 
