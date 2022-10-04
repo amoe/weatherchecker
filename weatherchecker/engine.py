@@ -11,8 +11,9 @@ def feels_like(weather):
 def in_bounds(x, y, tolerance):
     return (x > (y - tolerance)) and (x < (y + tolerance))
 
+# Intentionally not using 'utctimestamp' as we want local times
 def time_from_epoch_time(epoch_time):
-    timestamp = datetime.datetime.utcfromtimestamp(epoch_time)
+    timestamp = datetime.datetime.fromtimestamp(epoch_time)
     return timestamp.time()
     
 
@@ -80,7 +81,7 @@ def get_weather(print) -> None:
         print("You'd better wear some gloves as well.")
 
 
-    # XXX: Not 100% sure this is robust against BST
+    # This is robust against BST
     sunrise_time = time_from_epoch_time(weather.sunrise_time())
     sunset_time = time_from_epoch_time(weather.sunset_time())
 
