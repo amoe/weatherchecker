@@ -86,6 +86,7 @@ def get_weather(print) -> None:
     sunset_time = time_from_epoch_time(weather.sunset_time())
 
     print("Determined sunrise time as", sunrise_time)
+    print("Subtract 30 minutes from the sunrise time if you want to coincide it with your run.")
     print("Determined sunset time as", sunset_time)
 
     # 3h is the finest forecast granularity available.
