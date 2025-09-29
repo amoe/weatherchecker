@@ -1,23 +1,21 @@
 [tool.poetry]
 name = "weatherchecker"
-version = "0.1.0"
-description = ""
-authors = ["David Banks <amoebae@gmail.com>"]
+version = "0.2.0"
+description = "A simple weather checker"
+authors = ["David Banks <amoe@solasistim.net>"]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.13"
 gunicorn = "20.1.0"
-pyramid = "2.0"
+pyramid = "2.0.2"
 pyramid-jinja2 = "2.8"
 pyowm = "3.2.0"
 
 [tool.poetry.scripts]
 weatherchecker-cli = "weatherchecker.cli:main"
 
-[tool.poetry.dev-dependencies]
-
 [tool.poetry.plugins."paste.app_factory"]
-main = "weatherchecker:main"
+main = "weatherchecker.web:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
